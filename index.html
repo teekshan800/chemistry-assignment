@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Cheminformatics Virtual Lab</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{--bg:#0b1220;--sb:#0f1a30;--card:#131f38;--bd:#25365a;--tx:#eaf0fb;--mu:#9bb0d3;--ac:#2dd4bf;--a2:#818cf8;--bad:#f87171;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f1f5fb;--sb:#fff;--card:#fff;--bd:#d5deee;--tx:#14213d;--mu:#5a6b8c;--ac:#0d9488;--a2:#4f46e5}}
+:root[data-theme="light"]{--bg:#f1f5fb;--sb:#fff;--card:#fff;--bd:#d5deee;--tx:#14213d;--mu:#5a6b8c;--ac:#0d9488;--a2:#4f46e5}
+*{box-sizing:border-box}html,body{height:100%}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+#app{display:grid;grid-template-columns:270px 1fr;min-height:100%}
+#nav{background:var(--sb);border-right:1px solid var(--bd);padding:18px 14px;display:flex;flex-direction:column;gap:6px;position:sticky;top:0;height:100vh;overflow:auto}
+.brand{display:flex;gap:10px;align-items:center;font-size:30px;margin-bottom:10px}.brand b{display:block;font-size:18px;line-height:1.1}.brand small{font-size:12px;color:var(--mu)}
+#nav button.n{text-align:left;font-size:16px;padding:11px 14px;border:0;background:none;color:var(--tx);border-radius:10px;cursor:pointer}
+#nav button.n:hover{background:var(--bd)}#nav button.on{background:linear-gradient(90deg,var(--ac),var(--a2));color:#fff;font-weight:600}
+#nav label{font-size:12px;color:var(--mu);display:block;margin-top:8px}
+input,select,button{font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:9px 11px}input,select{width:100%}
+button{cursor:pointer}button:hover{border-color:var(--ac)}.pri{background:linear-gradient(90deg,var(--ac),var(--a2));border:0;color:#fff;font-weight:600}
+main{padding:26px 30px;max-width:1250px;width:100%}.pg{display:none}.pg.on{display:block}
+h1{margin:0 0 4px;font-size:32px}h2{font-size:20px;margin:0 0 10px}.sub{color:var(--mu);margin:0 0 18px;font-size:17px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:18px;margin-bottom:16px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:10px 0}.row>*{width:auto}.row input[type=text],.row .grow{flex:1;min-width:160px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.cd{position:relative;background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;cursor:pointer;display:flex;flex-direction:column;gap:2px;transition:.15s}
+.cd:hover{transform:translateY(-3px);border-color:var(--ac)}.cd.sl{border-color:var(--ac);box-shadow:0 0 0 2px var(--ac) inset}
+.cd small{color:var(--ac);font-size:11px;text-transform:uppercase;letter-spacing:.08em}.cd b{font-size:18px}.cd span{color:var(--mu)}.cd em{font-style:normal;font-size:13px;color:var(--a2)}
+.ck{position:absolute;right:10px;top:8px;font-size:22px;color:var(--ac)!important}
+.lab{display:grid;grid-template-columns:1fr 300px;gap:16px}@media(max-width:1000px){.lab{grid-template-columns:1fr}}
+#v{width:100%;height:min(66vh,580px);min-height:360px;border-radius:14px;position:relative;overflow:hidden}
+.t{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}.m{background:var(--bg);border:1px solid var(--bd);border-top:4px solid var(--c);border-radius:12px;padding:12px}
+.m span{color:var(--mu);font-size:14px}.m b{display:block;font-size:26px}.m em{display:block;font-style:normal;font-size:13px;color:var(--mu);line-height:1.3}
+.bar{height:12px;background:var(--bg);border-radius:8px;overflow:hidden;margin:4px 0 12px}.bar i{display:block;height:100%;border-radius:8px}
+table{border-collapse:collapse;width:100%}th,td{padding:10px;border-bottom:1px solid var(--bd);text-align:left}th{color:var(--mu);font-size:13px;text-transform:uppercase}
+.ms{padding:10px 14px;border-radius:10px;margin-top:8px}.ok{background:#14532d;color:#bbf7d0}.er{background:#7f1d1d;color:#fecaca}
+.q{margin:14px 0}.q button{margin:4px 6px 0 0;min-width:90px}.q .g{background:#14532d}.q .r{background:#7f1d1d}
+.leg span{display:inline-block;margin:3px 10px 3px 0;font-size:14px}.leg i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:4px;vertical-align:-1px}
+@media(max-width:860px){#app{grid-template-columns:1fr}#nav{position:static;height:auto;flex-direction:row;flex-wrap:wrap}#nav button.n{padding:8px 10px;font-size:14px}main{padding:16px}}
+</style></head><body>
+<div id="app"><nav id="nav">
+<div class="brand">🧪<div><b>Virtual Lab</b><small>Cheminformatics studio</small></div></div>
+<button class="n" data-p="explorer">🔎 Explorer</button><button class="n" data-p="lab">🧬 3D Lab</button><button class="n" data-p="props">📊 Properties</button><button class="n" data-p="compare">⚖️ Compare</button><button class="n" data-p="quiz">📝 Assessment</button><button class="n" data-p="theory">📖 Theory</button><button class="n" data-p="report">📄 PDF Report</button>
+<label>Current molecule</label><select id="cm"></select>
+<div class="row" style="margin:4px 0"><button id="pv">◀</button><button id="nx">▶</button><button id="rn2" class="grow">🎲 Surprise me</button></div>
+<label>Student name</label><input id="sn"><label>Registration number</label><input id="rn"><label>College / department</label><input id="cl" placeholder="e.g. College, branch">
+<div style="flex:1"></div><div class="row"><span style="color:var(--mu);font-size:13px" id="sc"></span><button id="th" title="Theme">🌓</button></div></nav>
+<main>
+<section class="pg" id="pg-explorer"><h1>Explore molecules</h1><p class="sub">Click a card to open it in 3D. Tick ☐ to add it to your report.</p>
+<div class="card"><div class="row"><input type="text" id="q" placeholder="Search name, formula or category…"><select id="cf" style="max-width:200px"></select><button id="all">Select shown</button><button id="none">Clear</button></div>
+<div class="row"><input type="text" id="cs" placeholder="Add your own SMILES, e.g. CC(=O)OC"><button id="ca" class="pri">＋ Add</button></div><div id="cmsg"></div><div class="sub" id="cnt" style="margin:6px 0 0"></div></div>
+<div class="grid" id="grid"></div></section>
+<section class="pg" id="pg-lab"><h1 id="lt">3D Lab</h1><p class="sub" id="ls"></p>
+<div class="lab"><div class="card"><div id="v"></div>
+<div class="row"><select id="st"><option value="b">⚪ Ball &amp; Stick</option><option value="s">▬ Stick</option><option value="p">🔵 Space filling</option><option value="w">╱ Wireframe</option></select>
+<select id="bg"><option value="#0b1020">Dark</option><option value="#f4f6fb">Light</option><option value="#1b1148">Purple</option></select>
+<label><input type="checkbox" id="sf" style="width:auto"> vdW shell</label><label><input type="checkbox" id="lb" style="width:auto"> Labels</label><label><input type="checkbox" id="sp" style="width:auto"> Spin</label>
+<button id="snap">📸 Save image</button><button id="rst">⟲ Reset</button></div><div class="sub" style="font-size:14px;margin:0">Drag to rotate · scroll/pinch to zoom · 3D geometry is approximate.</div></div>
+<div class="card"><h2>Quick facts</h2><div id="qf"></div><h2 style="margin-top:14px">Atom colours</h2><div class="leg" id="leg"></div></div></div></section>
+<section class="pg" id="pg-props"><h1 id="pt">Properties</h1><p class="sub" id="psm"></p><div class="card"><div class="t" id="pg"></div></div>
+<div class="card"><h2>💊 Drug-likeness (Lipinski rule of five)</h2><div id="lip"></div></div><div class="card"><h2>🧠 In plain English</h2><p id="nt" style="font-size:17px"></p></div></section>
+<section class="pg" id="pg-compare"><h1>Compare two molecules</h1><p class="sub">Pick any two and see how their properties differ.</p><div class="card"><div class="row"><select id="ca2"></select><select id="cb2"></select></div><div style="overflow-x:auto"><table id="ct"></table></div></div></section>
+<section class="pg" id="pg-quiz"><h1>Assessment</h1><p class="sub">6 random questions generated from the library.</p><div class="card"><div id="qz"></div><div class="row"><button class="pri" id="nq">🔁 New quiz</button><b id="qs"></b></div></div></section>
+<section class="pg" id="pg-theory"><h1>Theory</h1><p class="sub">The ideas behind this lab.</p>
+<div class="card"><h2>SMILES</h2>A text way to write a molecule. Letters are atoms, = and # are double and triple bonds, brackets ( ) are branches, digits close rings, lower-case letters are aromatic atoms. Example: CCO is ethanol.</div>
+<div class="card"><h2>Molecular descriptors</h2>Numbers computed from structure: molecular weight (size), TPSA (polarity), H-bond donors/acceptors (how it bonds with water and proteins), rotatable bonds (flexibility) and ring count.</div>
+<div class="card"><h2>Lipinski's rule of five</h2>Oral drugs usually have MW ≤ 500, HBD ≤ 5, HBA ≤ 10 (and LogP ≤ 5, not computed here). Breaking more than one rule often means poor absorption.</div>
+<div class="card"><h2>3D display models</h2><b>Ball &amp; stick</b> shows atoms and bonds clearly; <b>stick</b> stresses bonding; <b>space filling</b> shows volume using van der Waals radii; <b>wireframe</b> is the simplest view. The vdW shell wraps each atom in its van der Waals sphere.</div>
+<div class="card"><h2>Sigma and pi bonds</h2>Every bond has one sigma (head-on) bond. Double bonds add one pi bond and triple bonds add two. Aromatic rings carry alternating pi bonds.</div></section>
+<section class="pg" id="pg-report"><h1>Professional PDF report</h1><p class="sub">Cover page, contents, summary charts, one page per molecule with 3D image, properties, Lipinski check and method notes.</p>
+<div class="card"><div class="row"><select id="sc2"><option value="sel">Ticked molecules (Explorer)</option><option value="cur">Current molecule only</option><option value="all">All molecules in library</option></select><input type="text" id="rt" placeholder="Report subtitle (optional)"></div>
+<div class="row"><label><input type="checkbox" id="o3" checked style="width:auto"> Include 3D images</label><label><input type="checkbox" id="och" checked style="width:auto"> Include MW chart</label></div>
+<button class="pri" id="mk" style="font-size:18px;padding:13px 22px">📄 Generate PDF report</button><div class="sub" id="rs" style="margin-top:10px"></div></div></section>
+</main></div>
+<div id="capv" style="position:fixed;left:-9999px;top:0;width:720px;height:630px"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.0.4/3Dmol-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const VAL={C:4,N:3,O:2,S:2,P:3,F:1,Cl:1,Br:1,I:1,B:3,H:1},MASS={C:12.011,H:1.008,N:14.007,O:15.999,S:32.06,P:30.974,F:18.998,Cl:35.45,Br:79.904,I:126.904,B:10.81};
+const LIB="Methane|C;Ethane|CC;Propane|CCC;Butane|CCCC;Hexane|CCCCCC;Cyclohexane|C1CCCCC1;Ethene|C=C;Ethyne|C#C;Methanol|CO;Ethanol|CCO;Isopropanol|CC(C)O;Ethylene Glycol|OCCO;Glycerol|OCC(O)CO;Cyclohexanol|OC1CCCCC1;Acetaldehyde|CC=O;Acetone|CC(C)=O;Formic Acid|OC=O;Acetic Acid|CC(=O)O;Lactic Acid|CC(O)C(=O)O;Diethyl Ether|CCOCC;Ethyl Acetate|CCOC(C)=O;Acetamide|CC(N)=O;Urea|NC(N)=O;Acetonitrile|CC#N;Ethylamine|CCN;Trimethylamine|CN(C)C;DMSO|CS(C)=O;Dichloromethane|ClCCl;Chloroform|ClC(Cl)Cl;Benzene|c1ccccc1;Toluene|Cc1ccccc1;Styrene|C=Cc1ccccc1;Phenol|Oc1ccccc1;Aniline|Nc1ccccc1;Benzaldehyde|O=Cc1ccccc1;Benzoic Acid|OC(=O)c1ccccc1;Salicylic Acid|OC(=O)c1ccccc1O;Naphthalene|c1ccc2ccccc2c1;Pyridine|c1ccncc1;Furan|c1ccoc1;Thiophene|c1ccsc1;Imidazole|c1cnc[nH]1;Glycine|NCC(=O)O;Alanine|CC(N)C(=O)O;Glucose|OCC1OC(O)C(O)C(O)C1O;Aspirin|CC(=O)Oc1ccccc1C(=O)O;Paracetamol|CC(=O)Nc1ccc(O)cc1;Ibuprofen|CC(C)Cc1ccc(cc1)C(C)C(=O)O;Caffeine|CN1C=NC2=C1C(=O)N(C(=O)N2C)C;Nicotine|CN1CCCC1c1cccnc1";
+function parse(s){
+ s=s.trim();if(!s)throw'Empty SMILES';
+ const A=[],B=[],ring={},stack=[];let prev=-1,bo=null,i=0;
+ const add=(el,ar,h)=>{const a={el,ar,h,id:A.length};A.push(a);if(prev>=0)B.push([prev,a.id,bo||(ar&&A[prev].ar?1.5:1)]);prev=a.id;bo=null};
+ while(i<s.length){const c=s[i];
+  if(c=='('){stack.push(prev);i++}
+  else if(c==')'){if(!stack.length)throw'Unbalanced )';prev=stack.pop();i++}
+  else if('-=#:/\\'.includes(c)){bo=c=='='?2:c=='#'?3:c==':'?1.5:1;i++}
+  else if(c=='['){const j=s.indexOf(']',i),m=s.slice(i+1,j).match(/^\d*([A-Z][a-z]?|[bcnops])@*(H\d?)?/);if(j<0||!m)throw'Bad bracket atom';let el=m[1];const ar=el==el.toLowerCase();el=el[0].toUpperCase()+el.slice(1);if(!(el in VAL))throw'Unsupported element '+el;add(el,ar,m[2]?(m[2].length>1?+m[2][1]:1):0);i=j+1}
+  else if(/[A-Za-z]/.test(c)){const t=s.substr(i,2);if(t=='Cl'||t=='Br'){add(t,false,null);i+=2}else{if(!/[BCNOPSFIbcnops]/.test(c))throw'Unsupported atom '+c;add(c.toUpperCase(),c==c.toLowerCase(),null);i++}}
+  else if(/[0-9%]/.test(c)){let n=c;if(c=='%'){n=s.substr(i+1,2);i+=2}i++;
+   if(ring[n]){const o=ring[n];B.push([o.a,prev,bo||o.b||(A[o.a].ar&&A[prev].ar?1.5:1)]);delete ring[n]}else ring[n]={a:prev,b:bo};bo=null}
+  else throw'Invalid character "'+c+'"'}
+ if(Object.keys(ring).length||stack.length||!A.length)throw'Unclosed ring or branch';
+ const sum=A.map(()=>0);B.forEach(([a,b,o])=>{sum[a]+=o;sum[b]+=o});
+ A.forEach(a=>{if(a.h===null){const u=Math.round(sum[a.id]);let v=VAL[a.el];if(a.el=='S')v=[2,4,6].find(x=>x>=u)||6;if(a.el=='P')v=u>3?5:3;a.h=Math.max(0,v-u)}});
+ // kekulé (greedy) for aromatic bonds
+ const dbl=A.map(()=>0);B.forEach(b=>{b[3]=b[2];if(b[2]==2){dbl[b[0]]=dbl[b[1]]=1}});
+ B.forEach(b=>{if(b[2]==1.5){if(!dbl[b[0]]&&!dbl[b[1]]&&A[b[0]].el!='O'&&A[b[0]].el!='S'&&A[b[1]].el!='O'&&A[b[1]].el!='S'&&!(A[b[0]].h&&A[b[0]].el=='N')&&!(A[b[1]].h&&A[b[1]].el=='N')){b[3]=2;dbl[b[0]]=dbl[b[1]]=1}else b[3]=1}});
+ const heavy=A.length,hv=A.map(a=>a);
+ for(let k=0;k<heavy;k++)for(let h=0;h<A[k].h;h++){const id=A.length;A.push({el:'H',ar:false,h:0,id});B.push([k,id,1,1])}
+ return{A,B,heavy}}
+const BL={H:{C:1.09,N:1.01,O:0.96,S:1.34}};
+function blen(a,b,o){const x=a.el,y=b.el;if(x=='H'||y=='H'){const e=x=='H'?y:x;return BL.H[e]||1.1}
+ const hal={F:1.35,Cl:1.76,Br:1.9,I:2.1};if(hal[x]||hal[y])return hal[x]||hal[y];
+ if(x=='S'||y=='S')return o>=2?1.6:1.8;if(o==3)return 1.2;if(o==2)return 1.3;if(o==1.5)return 1.4;return(x=='C'&&y=='C')?1.52:1.44}
+function embed(m){const{A,B}=m,n=A.length,adj=A.map(()=>[]);
+ B.forEach(([a,b,o])=>{adj[a].push([b,o]);adj[b].push([a,o])});
+ const D=A.map((_,s)=>{const r=Array(n).fill(99);r[s]=0;const q=[s];while(q.length){const u=q.shift();adj[u].forEach(([v])=>{if(r[v]>r[u]+1){r[v]=r[u]+1;q.push(v)}})}return r});
+ const T=[];for(let i=0;i<n;i++)for(let j=i+1;j<n;j++){const d=D[i][j];let t,k;
+  if(d==1){const o=adj[i].find(e=>e[0]==j)[1];t=blen(A[i],A[j],o);k=1}
+  else if(d==2){const mid=adj[i].map(e=>e[0]).find(x=>D[x][j]==1),o1=adj[i].find(e=>e[0]==mid)[1],o2=adj[j].find(e=>e[0]==mid)[1];
+   const lin=adj[mid].some(e=>e[1]==3)||adj[mid].filter(e=>e[1]==2).length>1;
+   t=lin?blen(A[i],A[mid],o1)+blen(A[j],A[mid],o2):(A[mid].ar?2.42:2.47);k=.7}
+  else if(d==3&&A[i].ar&&A[j].ar){t=2.8;k=.5}
+  else{t=d==3?2.3:2.9;if(A[i].el=='H'||A[j].el=='H')t=d==3?2.2:2.5;k=-1}
+  T.push([i,j,t,k])}
+ const P=A.map(()=>[0,0,0].map(()=>(Math.random()-.5)*n*0.5+0.01));
+ for(let it=0;it<700;it++){const F=P.map(()=>[0,0,0]),st=.2*(1-it/760);
+  for(const[i,j,t,k]of T){const dx=P[j][0]-P[i][0],dy=P[j][1]-P[i][1],dz=P[j][2]-P[i][2],L=Math.hypot(dx,dy,dz)||1e-3;
+   if(k<0&&L>=t)continue;const f=(L-t)/L*(k<0?1:k);
+   F[i][0]+=f*dx;F[i][1]+=f*dy;F[i][2]+=f*dz;F[j][0]-=f*dx;F[j][1]-=f*dy;F[j][2]-=f*dz}
+  P.forEach((p,i)=>{for(let c=0;c<3;c++)p[c]+=F[i][c]*st})}
+ const c=[0,1,2].map(k=>P.reduce((s,p)=>s+p[k],0)/n);return P.map(p=>p.map((v,k)=>v-c[k]))}
+function molblock(m,P,name){const f=(v,w,d)=>v.toFixed(d).padStart(w);
+ let s=name+'\n  VLab\n\n'+String(m.A.length).padStart(3)+String(m.B.length).padStart(3)+'  0  0  0  0  0  0  0  0999 V2000\n';
+ m.A.forEach((a,i)=>s+=f(P[i][0],10,4)+f(P[i][1],10,4)+f(P[i][2],10,4)+' '+a.el.padEnd(3)+' 0  0  0  0  0  0  0  0  0  0  0  0\n');
+ m.B.forEach(b=>s+=String(b[0]+1).padStart(3)+String(b[1]+1).padStart(3)+String(Math.round(b[3])).padStart(3)+'  0\n');return s+'M  END\n'}
+function props(m){const{A,B,heavy}=m,cnt={};A.forEach(a=>cnt[a.el]=(cnt[a.el]||0)+1);
+ const order=Object.keys(cnt).filter(e=>e!='C'&&e!='H').sort();const seq=cnt.C?['C','H',...order]:['H',...order].sort();
+ const formula=seq.filter(e=>cnt[e]).map(e=>e+(cnt[e]>1?cnt[e]:'')).join('');
+ const mw=A.reduce((s,a)=>s+MASS[a.el],0);
+ let hbd=0,hba=0,tpsa=0;
+ A.slice(0,heavy).forEach(a=>{if(a.el!='N'&&a.el!='O')return;hba++;if(a.h)hbd++;
+  const bs=B.filter(b=>b[0]==a.id||b[1]==a.id);
+  if(a.el=='O')tpsa+=a.h?20.23:bs.some(b=>b[2]==2)?17.07:a.ar?13.14:9.23;
+  else tpsa+=a.ar?(a.h?15.79:12.89):bs.some(b=>b[2]==3)?23.79:a.h>=2?26.02:a.h==1?12.03:3.24});
+ const hb=B.filter(b=>b[0]<heavy&&b[1]<heavy),rings=hb.length-heavy+1;
+ const adj=A.slice(0,heavy).map(()=>[]);hb.forEach(([a,b])=>{adj[a].push(b);adj[b].push(a)});
+ const inRing=(a,b)=>{const seen=new Set([a]),q=[a];while(q.length){const u=q.shift();for(const v of adj[u]){if(u==a&&v==b)continue;if(v==b)return true;if(!seen.has(v)){seen.add(v);q.push(v)}}}return false};
+ let rot=0;hb.forEach(([a,b,o])=>{if(o==1&&adj[a].length>1&&adj[b].length>1&&!inRing(a,b)){const lin=x=>B.some(e=>(e[0]==x||e[1]==x)&&e[2]==3);if(!lin(a)&&!lin(b))rot++}});
+ const sigma=B.length,pi=B.reduce((s,b)=>s+Math.round(b[3])-1,0);
+ return{formula,mw:+mw.toFixed(3),hbd,hba,tpsa:+tpsa.toFixed(2),rot,rings,heavy,total:A.length,sigma,pi}}
+const PD=[['Molecular weight','mw',' g/mol','⚖️','Mass of one mole. Heavier = bigger molecule.','#ff4b4b'],['TPSA','tpsa',' Å²','💧','Polar surface area. Higher = more water-loving.','#3b82f6'],['H-bond donors','hbd','','🤝','N-H / O-H groups that can give an H-bond.','#10b981'],['H-bond acceptors','hba','','🧲','N and O atoms that can accept an H-bond.','#f59e0b'],['Rotatable bonds','rot','','🔄','Single bonds that spin freely = flexibility.','#8b5cf6'],['Rings','rings','','⭕','Number of closed rings in the molecule.','#ec4899'],['Heavy atoms','heavy','','🔩','All atoms except hydrogen.','#14b8a6'],['Total atoms','total','','⚛️','Every atom, hydrogens included.','#f97316'],['Sigma bonds','sigma','','➖','Head-on bonds: every bond has exactly one.','#6366f1'],['Pi bonds','pi','','〰️','Extra bonds in double, triple, aromatic parts.','#84cc16']];
+
+function jpg(png,W,H){return new Promise(r=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');x.fillStyle='#dfe5f0';x.fillRect(0,0,W,H);const k=Math.min(W/im.width,H/im.height);x.drawImage(im,(W-im.width*k)/2,(H-im.height*k)/2,im.width*k,im.height*k);r(c.toDataURL('image/jpeg',.82))};im.src=png})}
+function note(p){const s=p.mw<100?'very small':p.mw<300?'small':p.mw<500?'medium-sized':'large',t=p.tpsa<20?'mostly non-polar (oil-like)':p.tpsa<90?'moderately polar':'highly polar (water-loving)';return`This is a ${s} molecule (${p.mw} g/mol) that is ${t}. It has ${p.hbd} H-bond donor(s), ${p.hba} H-bond acceptor(s), ${p.rot} rotatable bond(s) and ${p.rings} ring(s), and ${p.pi?'contains double/triple/aromatic bonds':'has only single bonds'}.`}
+
+const CATN=['Hydrocarbon','Unsaturated','Alcohol','Carbonyl','Acid','Ether / Ester','N / S compound','Halogenated','Aromatic','Heterocycle','Biomolecule','Drug'],CB=[0,6,8,14,16,19,21,27,29,38,42,45];
+const items=[];LIB.split(';').forEach((s,i)=>{const[n,smi]=s.split('|');items.push({name:n,smi,cat:CATN[CB.filter(b=>b<=i).length-1]})});
+let cur=9,sel=new Set(),view=null,cap=null,QA=[];
+function get(i){const it=items[i];if(!it.p){const m=parse(it.smi),P=embed(m);Object.assign(it,{m,mb:molblock(m,P,it.name),p:props(m)})}return it}
+function atoms(it){return it.at||(it.at=(()=>{const L=it.mb.split('\n'),n=+L[3].slice(0,3);return Array.from({length:n},(_,k)=>{const l=L[4+k];return{el:l.slice(31,34).trim(),x:+l.slice(0,10),y:+l.slice(10,20),z:+l.slice(20,30)}})})())}
+const RV={H:1.2,C:1.7,N:1.55,O:1.52,S:1.8,P:1.8,F:1.47,Cl:1.75,Br:1.85,I:1.98,B:1.92};
+const ST={b:{stick:{radius:.18},sphere:{scale:.34}},s:{stick:{radius:.22}},p:{sphere:{}},w:{line:{linewidth:2}}};
+function draw(v,it,st,sf,lb,fc){v.removeAllModels();v.removeAllShapes();v.removeAllLabels();v.addModel(it.mb,'sdf');v.setStyle({},ST[st]);const A=atoms(it);
+ if(sf)A.forEach(a=>v.addSphere({center:{x:a.x,y:a.y,z:a.z},radius:RV[a.el]||1.7,color:0x8ab4ff,alpha:.35,opacity:.35}));
+ if(lb)A.forEach(a=>{if(a.el!='H')v.addLabel(a.el,{position:{x:a.x,y:a.y,z:a.z},fontSize:16,fontColor:fc||'#fff',backgroundColor:'#000',backgroundOpacity:.45,inFront:true})});
+ v.zoomTo();v.render()}
+const $$=s=>document.querySelectorAll(s),d2b=u=>{const[h,b]=u.split(','),s=atob(b),a=new Uint8Array(s.length);for(let i=0;i<s.length;i++)a[i]=s.charCodeAt(i);return new Blob([a],{type:h.match(/:(.*?);/)[1]})};
+async function save(name,blob){try{const d=(typeof claude!=='undefined')&&await claude.use('downloads');if(d){await d.save({filename:name,data:blob});return 'Saved '+name}}catch(e){if(e&&e.code=='declined')return 'Download cancelled.'}
+ const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2000);return 'Saved '+name}
+function opts(el,keep){el.innerHTML=items.map((it,i)=>`<option value="${i}">${i+1}. ${it.name}</option>`).join('');if(keep!=null)el.value=keep}
+function fill(){['cm','ca2','cb2'].forEach(id=>opts($(id)));$('cm').value=cur;$('ca2').value=cur;$('cb2').value=45}
+function setCur(i){cur=((i%items.length)+items.length)%items.length;$('cm').value=cur;if(PG=='lab')lab();if(PG=='props')rProps()}
+let PG='';
+function go(p){if(!$('pg-'+p))p='explorer';PG=p;$$('.pg').forEach(e=>e.classList.toggle('on',e.id=='pg-'+p));$$('#nav .n').forEach(e=>e.classList.toggle('on',e.dataset.p==p));if(location.hash!='#'+p)location.hash=p;
+ if(p=='explorer')rExp();if(p=='lab'){if(!view){view=$3Dmol.createViewer($('v'),{backgroundColor:$('bg').value})}lab()}if(p=='props')rProps();if(p=='compare')rCmp();if(p=='quiz'&&!QA.length)quiz();window.scrollTo(0,0)}
+function rExp(){const q=$('q').value.toLowerCase(),c=$('cf').value;let h='',n=0;items.forEach((it,i)=>{if(c&&it.cat!=c)return;if(q&&!(it.name+it.smi+it.cat+get(i).p.formula).toLowerCase().includes(q))return;n++;const p=get(i).p;
+ h+=`<div class="cd${sel.has(i)?' sl':''}" data-i="${i}"><span class="ck" data-k="${i}">${sel.has(i)?'☑':'☐'}</span><small>${it.cat}</small><b>${it.name}</b><span>${p.formula}</span><em>${p.mw} g/mol</em></div>`});
+ $('grid').innerHTML=h;$('cnt').textContent=n+' molecule(s) shown · '+sel.size+' ticked';$('sc').textContent=sel.size+' ticked for report'}
+function lab(){const it=get(cur),p=it.p;$('lt').textContent='3D Lab · '+it.name;$('ls').textContent=it.cat+' · '+p.formula+' · SMILES '+it.smi;
+ view.setBackgroundColor($('bg').value);draw(view,it,$('st').value,$('sf').checked,$('lb').checked);view.spin($('sp').checked);view.resize();
+ $('qf').innerHTML=[['Formula',p.formula],['Mol. weight',p.mw+' g/mol'],['TPSA',p.tpsa+' Å²'],['HBD / HBA',p.hbd+' / '+p.hba],['Rings',p.rings],['Atoms',p.total]].map(([k,v])=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bd)"><span style="color:var(--mu)">${k}</span><b>${v}</b></div>`).join('')}
+$('leg').innerHTML=[['C','#c8c8c8'],['H','#ffffff'],['O','#f04040'],['N','#3050f8'],['S','#ffff30'],['Cl','#1ff01f']].map(([e,c])=>`<span><i style="background:${c};border:1px solid #888"></i>${e}</span>`).join('');
+function rProps(){const it=get(cur),p=it.p;$('pt').textContent='Properties · '+it.name;$('psm').textContent=it.cat+' · SMILES '+it.smi;
+ $('pg').innerHTML=PD.map(([k,f,u,ic,h,c])=>`<div class="m" style="--c:${c}"><span>${ic} ${k}</span><b>${p[f]}${u}</b><em>${h}</em></div>`).join('');
+ const L=[['Molecular weight',p.mw,500],['H-bond donors',p.hbd,5],['H-bond acceptors',p.hba,10]];let bad=0;
+ $('lip').innerHTML=L.map(([k,v,l])=>{const ok=v<=l;if(!ok)bad++;return `<div>${k}: <b>${v}</b> (limit ${l}) ${ok?'✅':'❌'}</div><div class="bar"><i style="width:${Math.min(100,v/l*100)}%;background:${ok?'var(--ac)':'var(--bad)'}"></i></div>`}).join('')+`<div class="ms ${bad?'er':'ok'}">${bad?bad+' violation(s) of the rule of five':'Passes the rule of five (MW, HBD, HBA)'}</div>`;$('nt').textContent=note(p)}
+function rCmp(){const a=get(+$('ca2').value),b=get(+$('cb2').value);$('ct').innerHTML=`<tr><th>Property</th><th>${a.name}</th><th>${b.name}</th><th>B − A</th></tr><tr><td>Formula</td><td>${a.p.formula}</td><td>${b.p.formula}</td><td>${a.p.formula==b.p.formula?'Same':'Different'}</td></tr>`+PD.map(([k,f,u])=>{const x=a.p[f],y=b.p[f],d=+(y-x).toFixed(3);return `<tr><td>${k}</td><td>${x}${u}</td><td>${y}${u}</td><td style="color:${d>0?'var(--ac)':d<0?'var(--bad)':'var(--mu)'}">${d>0?'+':''}${d}</td></tr>`}).join('')}
+function quiz(){QA=[];let sc=0,done=0;const R=n=>Math.floor(Math.random()*n);
+ for(let k=0;k<6;k++){const a=get(R(50)),t=k%3;let q,ans,o=new Set();
+  if(t==0){q=`What is the molecular weight of ${a.name} (g/mol)?`;ans=a.p.mw.toFixed(2);o.add(ans);while(o.size<4)o.add((a.p.mw*(.6+Math.random()*.8)).toFixed(2))}
+  else{const f=t==1?'hbd':'rings';q=t==1?`How many H-bond donors does ${a.name} have?`:`How many rings does ${a.name} have?`;ans=String(a.p[f]);o.add(ans);while(o.size<4)o.add(String(R(t==1?6:5)))}
+  QA.push({q,ans,o:[...o].sort(()=>Math.random()-.5)})}
+ $('qz').innerHTML=QA.map((x,i)=>`<div class="q"><b>${i+1}. ${x.q}</b><br>${x.o.map(v=>`<button data-q="${i}" data-v="${v}">${v}</button>`).join('')}</div>`).join('');$('qs').textContent='';
+ $('qz').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled)return;const x=QA[b.dataset.q],ok=b.dataset.v==x.ans;b.className=ok?'g':'r';b.parentNode.querySelectorAll('button').forEach(z=>{z.disabled=true;if(z.dataset.v==x.ans)z.className='g'});if(ok)sc++;done++;$('qs').textContent=`Score: ${sc} / ${done}${done==6?' — finished!':''}`}}
+async function mkPDF(){
+ const list=$('sc2').value=='all'?items.map((_,i)=>i):$('sc2').value=='sel'?[...sel].sort((a,b)=>a-b):[cur];
+ if(!list.length){$('rs').textContent='Tick some molecules in the Explorer first.';return}
+ $('rs').textContent='Building PDF… please wait';await new Promise(r=>setTimeout(r,30));
+ try{const{jsPDF}=window.jspdf,doc=new jsPDF({compress:true}),NV=[13,38,76],TL=[20,150,140],toc=[],R=list.map(get),n=R.length;
+  if(!cap)cap=$3Dmol.createViewer($('capv'),{backgroundColor:'#dfe5f0'});
+  const tx=(t,x,y,o)=>doc.text(String(t),x,y,o),col=c=>doc.setTextColor(...c),pg=()=>doc.getNumberOfPages();
+  const band=(t,s)=>{doc.setFillColor(...NV);doc.rect(0,0,210,22,'F');doc.setFillColor(...TL);doc.rect(0,22,210,1.6,'F');col([255,255,255]);doc.setFont(undefined,'bold');doc.setFontSize(15);tx(t,14,14);if(s){doc.setFont(undefined,'normal');doc.setFontSize(9);tx(s,196,14,{align:'right'})}col([30,30,30]);doc.setFont(undefined,'normal')};
+  const hd=(t,y,x=14,w=182)=>{doc.setFont(undefined,'bold');doc.setFontSize(11.5);col(NV);tx(t,x,y);doc.setDrawColor(...TL);doc.setLineWidth(.5);doc.line(x,y+1.8,x+w,y+1.8);col([30,30,30]);doc.setFont(undefined,'normal')};
+  // cover
+  doc.setFillColor(...NV);doc.rect(0,0,210,150,'F');doc.setFillColor(...TL);doc.rect(0,150,210,4,'F');col([255,255,255]);doc.setFont(undefined,'bold');doc.setFontSize(32);tx('MOLECULAR',20,68);tx('PROPERTIES REPORT',20,84);
+  doc.setFont(undefined,'normal');doc.setFontSize(14);tx($('rt').value||'Cheminformatics Virtual Laboratory',20,102);doc.setFontSize(10);tx('3D structures  |  molecular descriptors  |  drug-likeness analysis',20,112);col([30,30,30]);
+  [['Student',$('sn').value||'-'],['Registration no.',$('rn').value||'-'],['College / dept.',$('cl').value||'-'],['Date',new Date().toLocaleDateString()],['Molecules analysed',n]].forEach(([k,v],i)=>{const y=175+i*12;doc.setFont(undefined,'bold');doc.setFontSize(11);tx(k,20,y);doc.setFont(undefined,'normal');tx(v,70,y)});
+  doc.setFontSize(8);col([120,120,120]);tx('Generated by the Cheminformatics Virtual Lab. Structures and descriptors are computed in the browser.',20,282);col([30,30,30]);
+  doc.addPage(); // contents (filled later)
+  // overview
+  doc.addPage();toc.push(['1. Overview',pg()]);band('1. Overview');
+  const mw=R.map(x=>x.p.mw),av=a=>(a.reduce((s,v)=>s+v,0)/a.length).toFixed(1),ps=R.filter(x=>x.p.mw<=500&&x.p.hbd<=5&&x.p.hba<=10).length;
+  hd('Key findings',34);doc.setFontSize(10.5);doc.text(doc.splitTextToSize(`This report covers ${n} molecule(s). Molecular weight ranges from ${Math.min(...mw)} to ${Math.max(...mw)} g/mol (mean ${av(mw)}). Mean TPSA is ${av(R.map(x=>x.p.tpsa))} A^2 and the mean number of rotatable bonds is ${av(R.map(x=>x.p.rot))}. ${ps} of ${n} molecule(s) satisfy Lipinski's rule of five on MW, HBD and HBA.`,182),14,43);
+  if($('och').checked){hd('Molecular weight comparison (g/mol)',72);const m=R.slice(0,16),mx=Math.max(...m.map(x=>x.p.mw));m.forEach((x,i)=>{const y=82+i*10;doc.setFontSize(9);tx(x.name.slice(0,20),14,y+4.5);doc.setFillColor(...(x.p.mw<=500?TL:[200,70,70]));doc.rect(58,y,Math.max(1,x.p.mw/mx*110),6,'F');tx(x.p.mw,58+Math.max(1,x.p.mw/mx*110)+2,y+4.5)});if(n>16){doc.setFontSize(8);col([120,120,120]);tx('Chart shows the first 16 molecules.',14,248);col([30,30,30])}}
+  // summary table
+  doc.addPage();toc.push(['2. Summary table',pg()]);band('2. Summary table');const X=[14,62,96,114,132,146,160,174,186],H=['Molecule','Formula','MW','TPSA','HBD','HBA','RotB','Rings','Lip.'];
+  const row=(v,y,f,b)=>{if(f){doc.setFillColor(...f);doc.rect(14,y-5,182,7,'F')}doc.setFont(undefined,b?'bold':'normal');doc.setFontSize(8.5);v.forEach((t,k)=>tx(t,X[k],y))};
+  let y=34;row(H,y,[220,232,246],1);R.forEach((x,i)=>{y+=7;if(y>280){doc.addPage();band('2. Summary table (cont.)');y=34;row(H,y,[220,232,246],1);y+=7}const p=x.p;row([x.name.slice(0,26),p.formula,p.mw,p.tpsa,p.hbd,p.hba,p.rot,p.rings,(p.mw<=500&&p.hbd<=5&&p.hba<=10)?'Pass':'Fail'],y,i%2?[244,247,251]:null)});
+  // molecules
+  for(let i=0;i<n;i++){const x=R[i],p=x.p,it=x;doc.addPage();toc.push([x.name,pg()]);band(items[list[i]].name,items[list[i]].cat+'  |  '+(i+1)+' of '+n);
+   doc.setFontSize(9);doc.text('SMILES: '+items[list[i]].smi+'     Formula: '+p.formula,14,30);
+   hd('3D structure',38,14,90);
+   if($('o3').checked){draw(cap,x,'b',false,true,'#fff');const png=await jpg(cap.pngURI(),600,525);doc.addImage(png,'JPEG',14,43,90,78.75);doc.setDrawColor(170);doc.setLineWidth(.3);doc.rect(14,43,90,78.75)}
+   hd('Properties',38,110,86);PD.forEach((d,k)=>{const yy=43+k*7.875;if(k%2){doc.setFillColor(244,247,251);doc.rect(110,yy,86,7.875,'F')}doc.setFontSize(9);tx(d[0],112,yy+5.3);doc.setFont(undefined,'bold');tx(p[d[1]]+d[2].replace('Å²',' A^2'),194,yy+5.3,{align:'right'});doc.setFont(undefined,'normal')});
+   hd('Interpretation',134);doc.setFontSize(10);doc.text(doc.splitTextToSize(note(p),182),14,142);
+   hd("Drug-likeness: Lipinski's rule of five",162);[['Rule','Limit','Value','Result'],['Molecular weight','<= 500',p.mw,p.mw<=500],['H-bond donors','<= 5',p.hbd,p.hbd<=5],['H-bond acceptors','<= 10',p.hba,p.hba<=10]].forEach((rw,k)=>{const yy=171+k*7.5;if(!k){doc.setFillColor(220,232,246);doc.rect(14,yy-5,182,7,'F')}doc.setFont(undefined,k?'normal':'bold');doc.setFontSize(9.5);[16,80,120,160].forEach((px,c)=>{let t=rw[c];if(k&&c==3){t=t?'Pass':'Fail';col(t=='Pass'?[20,140,70]:[200,40,40])}tx(t,px,yy);col([30,30,30])})});
+   hd('What each property means',206);PD.forEach((d,k)=>{const yy=214+k*6.6;doc.setFontSize(8.5);doc.setFont(undefined,'bold');tx(d[0]+':',14,yy);doc.setFont(undefined,'normal');tx(d[4],52,yy)})}
+  // method
+  doc.addPage();toc.push(['Method, notes & references',pg()]);band('Method, notes & references');hd('Method',34);doc.setFontSize(10);
+  doc.text(doc.splitTextToSize('Structures were entered as SMILES and parsed in the browser, with implicit hydrogens added from standard valences. 3D coordinates come from a distance-based layout of the molecular graph (bond lengths, bond angles and steric repulsion). They give a plausible shape for visualisation but are not energy-minimised or experimentally determined. Molecular weight uses standard atomic masses. TPSA uses N and O fragment contributions (Ertl et al.). H-bond donors are N/O atoms carrying hydrogen; acceptors are counted as all N and O atoms. Rotatable bonds are non-ring single bonds between non-terminal heavy atoms, excluding triple-bond neighbours. LogP is not computed, so only the MW, HBD and HBA parts of Lipinski\'s rule are checked. Values can differ slightly from RDKit or other software.',182),14,43);
+  hd('References',112);doc.text(doc.splitTextToSize('1. Lipinski, C. A. et al. Experimental and computational approaches to estimate solubility and permeability in drug discovery and development settings. Adv. Drug Deliv. Rev. 1997, 23, 3-25.\n2. Ertl, P.; Rohde, B.; Selzer, P. Fast calculation of molecular polar surface area as a sum of fragment-based contributions. J. Med. Chem. 2000, 43, 3714-3717.\n3. Weininger, D. SMILES, a chemical language and information system. J. Chem. Inf. Comput. Sci. 1988, 28, 31-36.',182),14,121);
+  // contents
+  doc.setPage(2);band('Contents');doc.setFontSize(11);doc.setFont(undefined,'bold');
+  [toc[0],toc[1],toc[toc.length-1]].forEach(([t,p],k)=>{tx(t,14,40+k*9);tx(p,196,40+k*9,{align:'right'})});doc.setFont(undefined,'normal');
+  const M=toc.slice(2,-1),hf=Math.ceil(M.length/2);hd('Molecules',72);doc.setFontSize(9.5);M.forEach(([t,p],j)=>{const c=j<hf?0:1,yy=82+(c?j-hf:j)*7,x0=c?110:14;tx(t.slice(0,24),x0,yy);tx(p,x0+86,yy,{align:'right'})});
+  const T=pg();for(let i=2;i<=T;i++){doc.setPage(i);doc.setFontSize(8);col([120,120,120]);doc.setDrawColor(200);doc.line(14,287,196,287);tx('Cheminformatics Virtual Lab'+($('sn').value?'  |  '+$('sn').value:''),14,292);tx('Page '+i+' of '+T,196,292,{align:'right'})}
+  $('rs').textContent=await save('molecular-report.pdf',doc.output('blob'))
+ }catch(e){$('rs').textContent='PDF error: '+(e.message||e)}}
+$('mk').onclick=mkPDF;
+
+$('nav').onclick=e=>{const b=e.target.closest('.n');if(b)go(b.dataset.p)};
+$('grid').onclick=e=>{const k=e.target.closest('.ck'),c=e.target.closest('.cd');if(k){const i=+k.dataset.k;sel.has(i)?sel.delete(i):sel.add(i);rExp()}else if(c){setCur(+c.dataset.i);go('lab')}};
+$('cm').onchange=()=>setCur(+$('cm').value);$('pv').onclick=()=>setCur(cur-1);$('nx').onclick=()=>setCur(cur+1);$('rn2').onclick=()=>setCur(Math.floor(Math.random()*items.length));
+$('q').oninput=rExp;$('cf').onchange=rExp;$('all').onclick=()=>{$$('#grid .cd').forEach(e=>sel.add(+e.dataset.i));rExp()};$('none').onclick=()=>{sel.clear();rExp()};
+$('ca').onclick=()=>{try{const smi=$('cs').value.trim();parse(smi);items.push({name:'Custom '+(items.length-49),smi,cat:'Custom'});get(items.length-1);fill();$('cs').value='';$('cmsg').innerHTML='<div class="ms ok">✅ Valid structure added</div>';rExp()}catch(e){$('cmsg').innerHTML='<div class="ms er">❌ '+e+'</div>'}};
+$('cs').onkeydown=e=>{if(e.key=='Enter')$('ca').click()};
+['st','bg','sf','lb'].forEach(id=>$(id).onchange=lab);$('sp').onchange=()=>view.spin($('sp').checked);$('rst').onclick=()=>{view.zoomTo();view.render()};
+$('snap').onclick=async()=>{await save(items[cur].name.replace(/\W+/g,'_')+'_3D.png',d2b(view.pngURI()))};
+$('ca2').onchange=rCmp;$('cb2').onchange=rCmp;$('nq').onclick=quiz;
+$('th').onclick=()=>{const r=document.documentElement;r.dataset.theme=getComputedStyle(r).getPropertyValue('--bg').trim()=='#0b1220'?'light':'dark'};
+$('cf').innerHTML='<option value="">All categories</option>'+CATN.map(c=>`<option>${c}</option>`).join('');fill();
+window.addEventListener('hashchange',()=>go(location.hash.slice(1)));go(location.hash.slice(1)||'explorer');
+</script></body></html>
